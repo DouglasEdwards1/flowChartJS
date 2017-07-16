@@ -1,0 +1,108 @@
+<html>
+<head></head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.6/flowchart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+
+    <div>
+        <br>
+        <h1> Flowchart </h1>
+        <textarea id="code" style="width: 100%;" rows="11">
+st=>start: Start|past:>http://www.google.com[blank]
+e=>end: Ended:>http://www.google.com
+op1=>operation: My Operation|past
+op2=>operation: Stuff|current
+sub1=>subroutine: My Subroutine|invalid
+cond=>condition: Yes or No?|approved:>http://www.google.com
+c2=>condition: Good idea|rejectend
+io=>inputoutput: catch something...|request
+st->op1(right)->cond
+cond(yes, right)->c2
+cond(no)->sub1(left)->op1
+c2(yes)->io->e
+c2(no)->op2->e
+        </textarea>
+    </div>
+    <br>
+    <div>
+        <button id="run" type="button">Run</button>
+    </div>
+    <br>
+    <div id="canvas"></div>
+
+    <script>
+
+        var chart;
+        $("#run").on("click", function() {
+            if (chart) chart.clean();
+            chart = flowchart.parse($("#code").val());
+            chart.drawSVG('canvas', {
+                'line-width': 3,
+                'line-length': 50,
+                'text-margin': 10,
+                'font-size': 14,
+                'font': 'normal',
+                'font-family': 'Helvetica',
+                'font-weight': 'normal',
+                'font-color': 'black',
+                'line-color': 'black',
+                'element-color': 'black',
+                'fill': 'white',
+                'yes-text': 'yes',
+                'no-text': 'no',
+                'arrow-end': 'block',
+                'scale': 1,
+                'symbols': {
+                'start': {
+                    'font-color': 'black',
+                    'element-color': 'black',
+                    'fill': 'white'
+                },
+                'end': {
+                    'class': 'end-element'
+                }
+                },
+                'flowstate': {
+                'past': {
+                    'fill': '#CCCCCC',
+                    'font-size': 12
+                },
+                'current': {
+                    'fill': 'white',
+                    'font-color': 'black',
+                    'font-weight': 'bold'
+                },
+                'future': {
+                    'fill': 'white'
+                },
+                'request': {
+                    'fill': 'white'
+                },
+                'invalid': {
+                    'fill': 'white'
+                },
+                'approved': {
+                    'fill': 'white',
+                    'font-size': 12,
+                    'yes-text': 'APPROVED',
+                    'no-text': 'n/a'
+                },
+                'rejected': {
+                    'fill': 'white',
+                    'font-size': 12,
+                    'yes-text': 'n/a',
+                    'no-text': 'REJECTED'
+                }
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            $("#run").click();
+        });
+
+    </script>
+
+<body>
+</html>
